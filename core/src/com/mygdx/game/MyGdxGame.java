@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 
 public class MyGdxGame extends ApplicationAdapter {
@@ -60,19 +61,20 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.begin();
         batch.draw(img, xAsteroid1, yAsteroid1, 64, 64, 128, 128, 1, 1, t, 0, 0, 256, 256, false, false);
         batch.draw(img, xAsteroid2, yAsteroid2, 64, 64, 128, 128, 0.8f, 0.8f, -t, 0, 0, 256, 256, false, false);
-        for (int i = 0; i < 10; i++) {
+        for (Bullet b :
+                bullets) {
             if (flag) {
-                batch.draw(img, bullets.get(i).getxBullet(), bullets.get(i).getyBullet(), 0, 0, 16, 16, 1, 1, 0, 256, 176, 16, 16, true, false);
+                batch.draw(img, b.getxBullet(), b.getyBullet(), 0, 0, 16, 16, 1, 1, 0, 256, 176, 16, 16, true, false);
             }
-            batch.draw(img, xShip, yShip, 0, 0, 64, 64, 1, 1, 0, 256, 192, 64, 64, false, false);
-            batch.end();
         }
+        batch.draw(img, xShip, yShip, 0, 0, 64, 64, 1, 1, 0, 256, 192, 64, 64, false, false);
+        batch.end();
     }
 
     public void update(float dt) {
         xAsteroid1 -= vxAsteroid1 * dt;
         xAsteroid2 -= vxAsteroid2 * dt;
-        xBullet += vxBullet * dt;
+//        xBullet += vxBullet * dt;
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             yShip += vyShip * dt;
         }
@@ -91,10 +93,18 @@ public class MyGdxGame extends ApplicationAdapter {
             yBullet = yShip + 24;
             spawnBullets(xBullet, yBullet);
         }
+        for (Bullet b :
+                bullets) {
+            flyBullet(b, dt);
+        }
     }
 
     public void spawnBullets(float xBullet, float yBullet) {
         bullets.add(new Bullet(xBullet, yBullet));
+    }
+
+    public void flyBullet(Bullet bullet, float dt) {
+        bullet.setxBullet(bullet.getxBullet() + vxBullet * dt);
     }
 
     @Override

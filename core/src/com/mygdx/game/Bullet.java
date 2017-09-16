@@ -16,4 +16,8 @@ public class Bullet {
     public float getyBullet() {
         return yBullet;
     }
+
+    public void setxBullet(float xBullet) {
+        this.xBullet = xBullet;
+    }
 }
