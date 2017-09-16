@@ -48,7 +48,7 @@ public class MyGdxGame extends ApplicationAdapter {
         vyShip = 120.0f;
 //        xBullet = 20.0f;
 //        yBullet = 190.0f;
-        vxBullet = 60.0f;
+        vxBullet = 90.0f;
         flag = false;
     }
 
@@ -88,7 +88,7 @@ public class MyGdxGame extends ApplicationAdapter {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             xShip -= vxShip * dt;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             flag = true;
             xBullet = xShip + 10;
             yBullet = yShip + 24;
