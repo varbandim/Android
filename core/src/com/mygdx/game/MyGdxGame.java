@@ -12,35 +12,39 @@ public class MyGdxGame extends ApplicationAdapter {
     SpriteBatch batch;
     Texture img;
     float t = 0f;
-    float asteroidX1;
-    float asteroidY1;
-    float asteroidVX1;
-    float asteroidX2;
-    float asteroidY2;
-    float asteroidVX2;
-    float shipX;
-    float shipY;
-    float shipVY;
-    float bulletX;
-    float bulletY;
-    float bulletVX;
+    float xAsteroid1;
+    float yAsteroid1;
+    float vxAsteroid1;
+    float xAsteroid2;
+    float yAsteroid2;
+    float vxAsteroid2;
+    float xShip;
+    float yShip;
+    float vxShip;
+    float vyShip;
+    float xBullet;
+    float yBullet;
+    float vxBullet;
+    boolean flag;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         img = new Texture("img.png");
-        asteroidX1 = 1250.0f;
-        asteroidY1 = 350.0f;
-        asteroidVX1 = 10.0f;
-        asteroidX2 = 1250.f;
-        asteroidY2 = 170.0f;
-        asteroidVX2 = 35.0f;
-        shipX = 10.0f;
-        shipY = 166.0f;
-        shipVY = 120.0f;
-        bulletX = 20.0f;
-        bulletY = 190.0f;
-        bulletVX = 60.0f;
+        xAsteroid1 = 1250.0f;
+        yAsteroid1 = 350.0f;
+        vxAsteroid1 = 10.0f;
+        xAsteroid2 = 1250.f;
+        yAsteroid2 = 170.0f;
+        vxAsteroid2 = 35.0f;
+        xShip = 10.0f;
+        yShip = 166.0f;
+        vxShip = 120.0f;
+        vyShip = 120.0f;
+//        xBullet = 20.0f;
+//        yBullet = 190.0f;
+        vxBullet = 60.0f;
+        flag = false;
     }
 
     @Override
@@ -51,31 +55,34 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         t += 0.2f;
         batch.begin();
-        batch.draw(img, asteroidX1, asteroidY1, 64, 64, 128, 128, 1, 1, t, 0, 0, 256, 256, false, false);
-        batch.draw(img, asteroidX2, asteroidY2, 64, 64, 128, 128, 0.8f, 0.8f, -t, 0, 0, 256, 256, false, false);
-        batch.draw(img, bulletX, bulletY, 0, 0, 16, 16, 1, 1, 0, 256, 176, 16, 16, true, false);
-        batch.draw(img, shipX, shipY, 0, 0, 64, 64, 1, 1, 0, 256, 192, 64, 64, false, false);
+        batch.draw(img, xAsteroid1, yAsteroid1, 64, 64, 128, 128, 1, 1, t, 0, 0, 256, 256, false, false);
+        batch.draw(img, xAsteroid2, yAsteroid2, 64, 64, 128, 128, 0.8f, 0.8f, -t, 0, 0, 256, 256, false, false);
+        if (flag) batch.draw(img, xBullet, yBullet, 0, 0, 16, 16, 1, 1, 0, 256, 176, 16, 16, true, false);
+        batch.draw(img, xShip, yShip, 0, 0, 64, 64, 1, 1, 0, 256, 192, 64, 64, false, false);
         batch.end();
     }
 
     public void update(float dt) {
-        asteroidX1 -= asteroidVX1 * dt;
-        asteroidX2 -= asteroidVX2 * dt;
-//        if (shipY > Gdx.graphics.getHeight() - 64) {
-//            shipY = Gdx.graphics.getHeight() - 64;
-//            shipVY = -shipVY;
-//        } else if (shipY < 0) {
-//            shipY = 0;
-//            shipVY = -shipVY;
-//        } else shipY += shipVY * dt;
-        bulletX += bulletVX * dt;
+        xAsteroid1 -= vxAsteroid1 * dt;
+        xAsteroid2 -= vxAsteroid2 * dt;
+        xBullet += vxBullet * dt;
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            shipY += shipVY * dt;
+            yShip += vyShip * dt;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            shipY -= shipVY * dt;
+            yShip -= vyShip * dt;
         }
-
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            xShip += vxShip * dt;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            xShip -= vxShip * dt;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            flag = true;
+            xBullet = xShip + 10;
+            yBullet = yShip + 24;
+        }
     }
 
     @Override
