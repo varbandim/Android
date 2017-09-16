@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MyGdxGame extends ApplicationAdapter {
     SpriteBatch batch;
@@ -96,6 +97,11 @@ public class MyGdxGame extends ApplicationAdapter {
         for (Bullet b :
                 bullets) {
             flyBullet(b, dt);
+        }
+        Iterator<Bullet> iter = bullets.iterator();
+        while (iter.hasNext()) {
+            Bullet b = iter.next();
+            if (b.getxBullet() > Gdx.graphics.getBackBufferWidth()) iter.remove();
         }
     }
 
